@@ -1,4 +1,4 @@
-# Crawler Web
+# Ant-Based Crawler
 
 A little focused crawler developed by Andrea Salvoni, Nicholas Tucci and Alessandro Sgaraglia
 
