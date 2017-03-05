@@ -41,8 +41,8 @@ End with an example of getting some data out of the system or using it for a lit
 ## Authors
 
 Andrea Salvoni: [GitHub: Menion93] 
-Nicholas Tucci: [GitHub: ]
-Alessandro Sgaraglia: [GitHub: ]
+Nicholas Tucci: [GitHub: Vzzarr]
+Alessandro Sgaraglia: [GitHub: AlexSgar]
 
 ## License
 
