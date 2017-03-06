@@ -2,6 +2,7 @@
  * Created by Andrea on 05/03/2017.
  */
 
+import crawler.AntBasedCrawler;
 import scorer.Scorer;
 import scorer.ScorerFactory;
 
@@ -19,7 +20,10 @@ public class Main
                 = new AntBasedCrawler(conf.getNumberOfAnts(),
                                       conf.getMaxNumberOfIteration(),
                                       conf.getMaxPagesToVisit(),
+                                      conf.getTrailUpdateCoefficient(),
                                       scorer);
+
+        antCrawler.FetchPagesId();
 
         System.out.println("End");
 

@@ -11,6 +11,7 @@ public class Configuration
     private int numberOfAnts = 100;
     private int maxPagesToVisit = 1000;
     private int maxNumberOfIteration = 100;
+    private double trailUpdateCoefficient = 0.1;
 
     private String dictionaryScoring = "DictionaryScorer";
     private String classifierScoring = "ClassifierScorer";
@@ -30,4 +31,6 @@ public class Configuration
     public String getScoringMethod() {
         return dictionaryScoring;
     }
+
+    public double getTrailUpdateCoefficient() {return trailUpdateCoefficient; }
 }
