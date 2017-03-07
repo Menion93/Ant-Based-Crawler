@@ -12,6 +12,7 @@ public class Configuration
     private int maxPagesToVisit = 1000;
     private int maxNumberOfIteration = 100;
     private double trailUpdateCoefficient = 0.1;
+    private double randomInitValue = 0.5;
 
     private String dictionaryScoring = "DictionaryScorer";
     private String classifierScoring = "ClassifierScorer";
@@ -33,4 +34,6 @@ public class Configuration
     }
 
     public double getTrailUpdateCoefficient() {return trailUpdateCoefficient; }
+
+    public double getRandomInitValue() { return randomInitValue; }
 }

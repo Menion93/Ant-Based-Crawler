@@ -21,6 +21,7 @@ public class Main
                                       conf.getMaxNumberOfIteration(),
                                       conf.getMaxPagesToVisit(),
                                       conf.getTrailUpdateCoefficient(),
+                                      conf.getRandomInitValue(),
                                       scorer);
 
         antCrawler.FetchPagesId();
