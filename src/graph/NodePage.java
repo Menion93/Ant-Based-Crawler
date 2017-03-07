@@ -15,4 +15,10 @@ public class NodePage
     public String getContent() {
         return content;
     }
+
+    public void freeContentMemory()
+    {
+        content = "";
+    }
+
 }

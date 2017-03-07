@@ -99,6 +99,7 @@ public class AntBasedCrawler
             if(numberOfStep == 1 && i == 0)
             {
                 id2score.put(currentNode.getId(), scorer.predictScore(currentNode));
+                currentNode.freeContentMemory();
             }
 
             for(int j=0; j<numberOfStep;j++)
@@ -110,6 +111,7 @@ public class AntBasedCrawler
                 if(!id2score.containsKey(successorNode.getId()))
                 {
                     id2score.put(successorNode.getId(), scorer.predictScore(successorNode));
+                    successorNode.freeContentMemory();
                 }
 
                 singlePath.add(new Arc(currentNode.getId(), successorNode.getId()));
