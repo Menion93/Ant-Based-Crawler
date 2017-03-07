@@ -10,4 +10,9 @@ public class GraphRepository
     {
         return new NodePage();
     }
+
+    public NodePage[] expandeNode(NodePage nodePage)
+    {
+        return new NodePage[]{};
+    }
 }

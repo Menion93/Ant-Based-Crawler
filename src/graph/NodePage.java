@@ -5,7 +5,14 @@ package graph;
  */
 public class NodePage
 {
-    float id;
+    double id;
     String content;
 
+    public double getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
