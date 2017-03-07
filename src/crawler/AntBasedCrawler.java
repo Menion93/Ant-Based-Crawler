@@ -9,8 +9,7 @@ import graph.NodePage;
 import scorer.Scorer;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Random;
 
 public class AntBasedCrawler
 {
@@ -33,6 +32,8 @@ public class AntBasedCrawler
     // Map representation of the arc and its associated trail value
     private HashMap<Arc, Double > arc2trail;
 
+    private Random randomGenerator;
+
     public AntBasedCrawler(int numberOfAnts, int maxNumberOfIteration, int maxPagesToVisit,
                            double trailUpdateCoefficient, double randomInitValue ,Scorer scorer)
     {
@@ -47,6 +48,8 @@ public class AntBasedCrawler
         arc2trail = new HashMap<>();
 
         graphRepo = new GraphRepository();
+
+        randomGenerator = new Random(6337);
     }
 
     public double[] FetchPagesId()
@@ -83,7 +86,7 @@ public class AntBasedCrawler
     private ArrayList<ArrayList<Arc>> DoAntsCycle()
     {
         // A list of list representing all the paths taken by all the ants
-        ArrayList<ArrayList<Arc>> path = new ArrayList<ArrayList<Arc>>();
+        ArrayList<ArrayList<Arc>> path = new ArrayList<>();
 
         // For all the ants
         for(int i=0; i<numberOfAnts; i++)
@@ -102,7 +105,7 @@ public class AntBasedCrawler
             {
                 NodePage[] frontier = graphRepo.expandeNode(currentNode);
 
-                NodePage successorNode = selectNode(frontier, j == numberOfStep-1);
+                NodePage successorNode = selectNode(currentNode, frontier);
 
                 if(!id2score.containsKey(successorNode.getId()))
                 {
@@ -110,14 +113,6 @@ public class AntBasedCrawler
                 }
 
                 singlePath.add(new Arc(currentNode.getId(), successorNode.getId()));
-
-                Arc e = new Arc(currentNode.getId(), successorNode.getId());
-
-                // Initialize the trail score
-                if(!arc2trail.containsKey(e))
-                {
-                    arc2trail.put(e, 0.d);
-                }
 
                 currentNode = successorNode;
             }
@@ -165,9 +160,48 @@ public class AntBasedCrawler
 
     // To do: select a node with probability according to the trail, or randomValue
     // if it is the last iteration
-    private NodePage selectNode(NodePage[] frontier, boolean lastIteration)
+    private NodePage selectNode(NodePage currentNode, NodePage[] frontier)
     {
-        return new NodePage();
+        double[] trailsProba = new double[frontier.length];
+        double sumTrails = 0;
+
+        for(int i=0; i<frontier.length; i++)
+        {
+            Arc e = new Arc(currentNode.getId(), frontier[i].getId());
+            if(arc2trail.containsKey(e))
+            {
+                trailsProba[i] = arc2trail.get(e);
+            }
+            else
+            {
+                arc2trail.put(e, randomInitValue);
+                trailsProba[i] = randomInitValue;
+            }
+
+            sumTrails += trailsProba[i];
+        }
+
+        // Normalize probability
+        for(int i=0; i<trailsProba.length; i++)
+        {
+            trailsProba[i] /= sumTrails;
+        }
+
+
+        // Chose random a successor between those probability
+        double nodeChoice = randomGenerator.nextDouble();
+        double currentProba = 0;
+
+        for(int i=0; i<trailsProba.length; i++)
+        {
+            currentProba += trailsProba[i];
+
+            if(nodeChoice < currentProba)
+                return frontier[i];
+        }
+
+        System.out.println("ERROR in the selection of the successor");
+        return null;
     }
 
 }
