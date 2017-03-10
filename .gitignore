@@ -6,4 +6,4 @@ out
 *.iml
 /bin/
 /target/
-knicker
+lib
