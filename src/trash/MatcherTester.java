@@ -7,7 +7,6 @@ public class MatcherTester {
 
 	public static void main(String[] args){
 		
-		DictionaryScorer dicScore = new DictionaryScorer();
 		NodePage nodePage = new NodePage();
 		nodePage.setContent("Domestic dog\n" + 
 				"Temporal range: 0.033–0 Ma\n" + 
@@ -36,7 +35,8 @@ public class MatcherTester {
 				"\n" + 
 				"Their long association with humans has led dogs to be uniquely attuned to human behavior[12] and they are able to thrive on a starch-rich diet that would be inadequate for other canid species.[13] Dogs vary widely in shape, size and colours.[14] Dogs perform many roles for people, such as hunting, herding, pulling loads, protection, assisting police and military, companionship and, more recently, aiding handicapped individuals. This influenc");
 		String query = "dog";
-		double score = dicScore.predictScore(nodePage, query);
+		DictionaryScorer dicScore = new DictionaryScorer(query);
+		double score = dicScore.predictScore(nodePage);
 		System.out.println(score);
 
 	}
