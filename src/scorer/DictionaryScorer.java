@@ -10,14 +10,14 @@ import scorer.synonyms.WordnikHandler;
 /**
  * Created by Andrea on 05/03/2017.
  */
-public class DictionaryScorer implements Scorer
+public class DictionaryScorer extends Scorer
 {
-    public DictionaryScorer()
+    public DictionaryScorer(String query)
     {
-
+		super(query);
     }
 
-    public double predictScore(NodePage nodePage, String query)
+    public double predictScore(NodePage nodePage)
     {
     	double tf_idf, score = 0;
     	double numberDocuments = 1000000;		//TODO calculate a better value

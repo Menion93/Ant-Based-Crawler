@@ -6,10 +6,11 @@ package crawler;
 
 import graph.GraphRepository;
 import graph.NodePage;
-import scorer.Scorer;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Random;
+import scorer.Scorer;
 
 public class AntBasedCrawler
 {
@@ -35,7 +36,7 @@ public class AntBasedCrawler
     private Random randomGenerator;
 
     public AntBasedCrawler(int numberOfAnts, int maxNumberOfIteration, int maxPagesToVisit,
-                           double trailUpdateCoefficient, double randomInitValue ,Scorer scorer)
+                           double trailUpdateCoefficient, double randomInitValue, Scorer scorer)
     {
         this.numberOfAnts = numberOfAnts;
         this.maxNumberOfIteration = maxNumberOfIteration;

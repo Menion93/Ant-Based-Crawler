@@ -5,16 +5,16 @@ package scorer;
  */
 public class ScorerFactory
 {
-    public Scorer getScorer(String myScorer)
+    public Scorer getScorer(String myScorer, String query)
     {
         if(myScorer == "DictionaryScorer")
         {
-            return new DictionaryScorer();
+            return new DictionaryScorer(query);
         }
 
         if(myScorer == "ClassifierScorer")
         {
-            return new ClassifierScorer();
+            return new ClassifierScorer(query);
         }
 
         System.out.println("Scoring method not supported!");

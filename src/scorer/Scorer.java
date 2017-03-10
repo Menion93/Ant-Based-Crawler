@@ -3,10 +3,17 @@ package scorer;
 import graph.NodePage;
 
 /**
- * Created by Andrea on 05/03/2017.
+ * Created by Andrea on 10/03/2017.
  */
-public interface Scorer
+public abstract class Scorer
 {
-    // Params to be decided
-    double predictScore(NodePage nodePage, String query);
+    protected String query;
+
+    public Scorer(String query)
+    {
+        this.query = query;
+    }
+
+    public abstract double predictScore(NodePage content);
+
 }
