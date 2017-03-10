@@ -17,6 +17,8 @@ public class Configuration
     private String dictionaryScoring = "DictionaryScorer";
     private String classifierScoring = "ClassifierScorer";
 
+    private String query = "University of Rome 3";
+
     public int getNumberOfAnts() {
         return numberOfAnts;
     }
@@ -36,4 +38,8 @@ public class Configuration
     public double getTrailUpdateCoefficient() {return trailUpdateCoefficient; }
 
     public double getRandomInitValue() { return randomInitValue; }
+
+    public String getQuery() {
+        return query;
+    }
 }
