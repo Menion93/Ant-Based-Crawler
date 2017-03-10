@@ -1,11 +1,14 @@
 package scorer.synonyms;
 import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.List; 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.jeremybrooks.knicker.AccountApi;
 import net.jeremybrooks.knicker.Knicker.RelationshipType;
 import net.jeremybrooks.knicker.KnickerException;
-import net.jeremybrooks.knicker.WordApi; 
+import net.jeremybrooks.knicker.WordApi;
+import net.jeremybrooks.knicker.dto.FrequencySummary;
 import net.jeremybrooks.knicker.dto.Related;
 import net.jeremybrooks.knicker.dto.TokenStatus;
 
@@ -28,82 +31,93 @@ public class WordnikHandler {
 	}
 
 	/**
-	 * retrieves synonyms of the input word
+	 * retrieves synonyms, with relative frequency, of the input word
 	 * @param word
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getSynonyms(String word) {
+	public Map<String, Double> getSynonymsFreq(String word) {
 		checkKey();
 
-		List<String> synonyms = new LinkedList<>();
+		Map<String, Double> synonymsFreq = new HashMap<>();
 		try {
 			List<Related> listSynonyms = WordApi.related(word, false, EnumSet.of(RelationshipType.synonym),100);
 			for(Related r : listSynonyms)
 				for(String s :r.getWords())
-					synonyms.add(s);
+					synonymsFreq.put(s, this.getFrequency(s));
 		} 
 		catch (KnickerException e) { e.printStackTrace();	}
-		return synonyms;
+		return synonymsFreq;
 	}
 	
 	/**
-	 * retrieves hypernyms of the input word
+	 * retrieves hypernyms, with relative frequency, of the input word
 	 * @param word
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getHypernyms(String word) {
+	public Map<String, Double> getHypernymsFreq(String word) {
 		checkKey();
 
-		List<String> hypernyms = new LinkedList<>();
+		Map<String, Double> hypernymsFreq = new HashMap<>();
 		try {
 			List<Related> listHypernyms = WordApi.related(word, false, EnumSet.of(RelationshipType.hypernym),100);
 			for(Related r : listHypernyms)
 				for(String s :r.getWords())
-					hypernyms.add(s);
+					hypernymsFreq.put(s, this.getFrequency(s));
 		} 
 		catch (KnickerException e) { e.printStackTrace();	}
-		return hypernyms;
+		return hypernymsFreq;
 	}
 	
 	/**
-	 * retrieves hyponyms of the input word
+	 * retrieves hyponyms, with relative frequency, of the input word
 	 * @param word
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getHyponyms(String word) {
+	public Map<String, Double> getHyponymsFreq(String word) {
 		checkKey();
 
-		List<String> hyponyms = new LinkedList<>();
+		Map<String, Double> hyponymsFreq = new HashMap<>();
 		try {
 			List<Related> listHyponyms = WordApi.related(word, false, EnumSet.of(RelationshipType.hyponym),100);
 			for(Related r : listHyponyms)
 				for(String s :r.getWords())
-					hyponyms.add(s);
+					hyponymsFreq.put(s, this.getFrequency(s));
 		} 
 		catch (KnickerException e) { e.printStackTrace();	}
-		return hyponyms;
+		return hyponymsFreq;
 	}
 	
 	/**
-	 * retrieves equivalents of the input word
+	 * retrieves equivalents, with relative frequency, of the input word
 	 * @param word
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getEquivalents(String word) {
+	public Map<String, Double> getEquivalentsFreq(String word) {
 		checkKey();
 
-		List<String> equivalents = new LinkedList<>();
+		Map<String, Double> equivalentsFreq = new HashMap<>();
 		try {
 			List<Related> listEquivalents = WordApi.related(word, false, EnumSet.of(RelationshipType.equivalent),100);
 			for(Related r : listEquivalents)
 				for(String s :r.getWords())
-					equivalents.add(s);
-		} 
+					equivalentsFreq.put(s, this.getFrequency(s));
+		}
 		catch (KnickerException e) { e.printStackTrace();	}
-		return equivalents;
+		return equivalentsFreq;
+	}
+	
+	public double getFrequency(String word) {
+		try {
+			FrequencySummary frequency = WordApi.frequency(word);
+			int freq = frequency.getTotalCount();
+			if(freq == 0)	//input word very rare: return 1
+				return 1;
+			return freq;
+		} 
+		catch (KnickerException e) { return 1;	}	//input word is not present: seen that is rare, the return is 1
 	}
 }

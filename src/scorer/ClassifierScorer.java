@@ -12,7 +12,7 @@ public class ClassifierScorer implements Scorer
 
     }
 
-    public double predictScore(NodePage nodePage)
+    public double predictScore(NodePage nodePage, String query)
     {
         return 0;
     }

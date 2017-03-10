@@ -8,5 +8,5 @@ import graph.NodePage;
 public interface Scorer
 {
     // Params to be decided
-    double predictScore(NodePage nodePage);
+    double predictScore(NodePage nodePage, String query);
 }

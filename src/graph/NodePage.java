@@ -15,10 +15,25 @@ public class NodePage
     public String getContent() {
         return content;
     }
+    
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public void freeContentMemory()
     {
         content = "";
     }
+
+    /**
+     * counts number of words in this.content
+     * @return
+     */
+	public double getSizeWords() {
+		String trim = this.content.trim();
+	    if (trim.isEmpty())
+	        return 0;
+	    return trim.split("\\s+").length;
+	}
 
 }
