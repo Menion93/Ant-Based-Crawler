@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import graph.NodePage;
-import scorer.synonyms.WordnikHandler;
+import scorer.relateds.WordnikHandler;
 
 /**
  * Created by Andrea on 05/03/2017.
@@ -26,10 +26,10 @@ public class DictionaryScorer extends Scorer
     	double dimNode = nodePage.getSizeWords();
 
     	WordnikHandler wordnik = new WordnikHandler();
-    	Map<String, Double> synonymsFreq = wordnik.getSynonymsFreq(query);
-    	Map<String, Double> equivalentsFreq = wordnik.getEquivalentsFreq(query);
-    	Map<String, Double> hyponymsFreq = wordnik.getHyponymsFreq(query);
-    	Map<String, Double> hypernymsFreq = wordnik.getHypernymsFreq(query);
+    	Map<String, Double> synonymsFreq = wordnik.getRelatedFreqParallel(query, "synonym");
+    	Map<String, Double> equivalentsFreq = wordnik.getRelatedFreqParallel(query, "hyperonym");
+    	Map<String, Double> hyponymsFreq = wordnik.getRelatedFreqParallel(query, "hyponym");
+    	Map<String, Double> hypernymsFreq = wordnik.getRelatedFreqParallel(query, "equivalent");
     	
     	for (String synonym : synonymsFreq.keySet()) {
     		tf_idf = (countOccurrences(content, synonym) / dimNode) * Math.log(numberDocuments / synonymsFreq.get(synonym));
