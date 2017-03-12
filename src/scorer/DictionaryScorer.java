@@ -1,6 +1,9 @@
 package scorer;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,48 +13,52 @@ import scorer.relateds.WordnikHandler;
 /**
  * Created by Andrea on 05/03/2017.
  */
-public class DictionaryScorer extends Scorer
-{
-    public DictionaryScorer(String query)
-    {
+public class DictionaryScorer extends Scorer {
+	
+    public DictionaryScorer(String query){
 		super(query);
     }
-
-    public double predictScore(NodePage nodePage)
-    {
-    	double tf_idf, score = 0;
-    	double numberDocuments = 1000000;		//TODO calculate a better value
-    	
+    
+    public double predictScore(NodePage nodePage){
     	String content = nodePage.getContent();
     	double dimNode = nodePage.getSizeWords();
-
+    	
+//    	Future<Double> futSynonymsScore = tf_idfRelatedAsync(content, dimNode, "synonym");
+//    	Future<Double> futHyperonymsScore = tf_idfRelatedAsync(content, dimNode, "hyperonym");
+//    	Future<Double> futHyponymsScore = tf_idfRelatedAsync(content, dimNode, "hyponym");
+//    	Future<Double> futEquivalentsScore = tf_idfRelatedAsync(content, dimNode, "equivalent");
+//
+//    	try {
+//			score = futSynonymsScore.get() + futHyperonymsScore.get() + futHyponymsScore.get() + futEquivalentsScore.get();
+//		} catch (InterruptedException | ExecutionException e) {	e.printStackTrace(); }
+//        return score;
+        
+    	return tf_idfRelated(content, dimNode, "synonym") + tf_idfRelated(content, dimNode, "hyperonym") + 
+    			tf_idfRelated(content, dimNode, "hyponym") + tf_idfRelated(content, dimNode, "equivalent");
+    }
+    
+	private Future<Double> tf_idfRelatedAsync(String content, double dimNode, String related){
+		return CompletableFuture.supplyAsync(() -> this.tf_idfRelated(content, dimNode, related));
+	}
+    
+	/**
+	 * calculates the tf-idf for each word related to the specified related and sums them
+	 * @param content
+	 * @param dimNode
+	 * @param related -> [synonym|hyperonym|hyponym|equivalent]
+	 * @return
+	 */
+    private double tf_idfRelated(String content, double dimNode, String related){
     	WordnikHandler wordnik = new WordnikHandler();
-    	Map<String, Double> synonymsFreq = wordnik.getRelatedFreqParallel(query, "synonym");
-    	Map<String, Double> equivalentsFreq = wordnik.getRelatedFreqParallel(query, "hyperonym");
-    	Map<String, Double> hyponymsFreq = wordnik.getRelatedFreqParallel(query, "hyponym");
-    	Map<String, Double> hypernymsFreq = wordnik.getRelatedFreqParallel(query, "equivalent");
-    	
-    	for (String synonym : synonymsFreq.keySet()) {
-    		tf_idf = (countOccurrences(content, synonym) / dimNode) * Math.log(numberDocuments / synonymsFreq.get(synonym));
-    		score = score + tf_idf;
-		}
-    	
-    	for (String equivalent : equivalentsFreq.keySet()) {
-    		tf_idf = (countOccurrences(content, equivalent) / dimNode) * 
-    				Math.log(1000000 / equivalentsFreq.get(equivalent));
-    		score = score + tf_idf;
-		}
-    	
-    	for (String hyponym : hyponymsFreq.keySet()) {
-    		tf_idf = (countOccurrences(content, hyponym) / dimNode) * Math.log(numberDocuments / hyponymsFreq.get(hyponym));
-    		score = score + tf_idf;
-		}
-    	
-    	for (String hypernym : hypernymsFreq.keySet()) {
-    		tf_idf = (countOccurrences(content, hypernym) / dimNode) * Math.log(numberDocuments / hypernymsFreq.get(hypernym));
-    		score = score + tf_idf;
-		}
-        return score;
+    	double numberDocuments = 1000000;	//TODO calculate a better value
+    	double tf_idf = 0;
+
+    	Map<String, Double> relatedFreq = wordnik.getRelatedFreqParallel(query, related);
+    	for (String rel : relatedFreq.keySet()){
+    		tf_idf = tf_idf + ((countOccurrences(content, rel) / dimNode) * Math.log(numberDocuments / relatedFreq.get(rel)));
+//    		System.out.println(tf_idf);
+    	}
+    	return tf_idf;
     }
     
     /**
