@@ -23,18 +23,18 @@ public class DictionaryScorer extends Scorer {
     	String content = nodePage.getContent();
     	double dimNode = nodePage.getSizeWords();
     	
-//    	Future<Double> futSynonymsScore = tf_idfRelatedAsync(content, dimNode, "synonym");
-//    	Future<Double> futHyperonymsScore = tf_idfRelatedAsync(content, dimNode, "hyperonym");
-//    	Future<Double> futHyponymsScore = tf_idfRelatedAsync(content, dimNode, "hyponym");
-//    	Future<Double> futEquivalentsScore = tf_idfRelatedAsync(content, dimNode, "equivalent");
-//
-//    	try {
-//			score = futSynonymsScore.get() + futHyperonymsScore.get() + futHyponymsScore.get() + futEquivalentsScore.get();
-//		} catch (InterruptedException | ExecutionException e) {	e.printStackTrace(); }
-//        return score;
+    	Future<Double> futSynonymsScore = tf_idfRelatedAsync(content, dimNode, "synonym");
+    	Future<Double> futHyperonymsScore = tf_idfRelatedAsync(content, dimNode, "hyperonym");
+    	Future<Double> futHyponymsScore = tf_idfRelatedAsync(content, dimNode, "hyponym");
+    	Future<Double> futEquivalentsScore = tf_idfRelatedAsync(content, dimNode, "equivalent");
+		double score = 0;
+    	try {
+			score = futSynonymsScore.get() + futHyperonymsScore.get() + futHyponymsScore.get() + futEquivalentsScore.get();
+		} catch (InterruptedException | ExecutionException e) {	e.printStackTrace(); }
+        return score;
         
-    	return tf_idfRelated(content, dimNode, "synonym") + tf_idfRelated(content, dimNode, "hyperonym") + 
-    			tf_idfRelated(content, dimNode, "hyponym") + tf_idfRelated(content, dimNode, "equivalent");
+    	//return tf_idfRelated(content, dimNode, "synonym") + tf_idfRelated(content, dimNode, "hyperonym") +
+    	//		tf_idfRelated(content, dimNode, "hyponym") + tf_idfRelated(content, dimNode, "equivalent");
     }
     
 	private Future<Double> tf_idfRelatedAsync(String content, double dimNode, String related){

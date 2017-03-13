@@ -8,6 +8,11 @@ public class NodePage
     double id;
     String content;
 
+    public NodePage()
+    {
+        content = "";
+    }
+
     public double getId() {
         return id;
     }
