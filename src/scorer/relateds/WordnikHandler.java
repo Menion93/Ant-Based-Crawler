@@ -59,7 +59,7 @@ public class WordnikHandler {
 	 */
 	private void checkKey() {
 		// use your API key here
-		System.setProperty("WORDNIK_API_KEY", "70538348db6b42e43a5181e32070feebc0b303e293ed13a97");
+		System.setProperty("WORDNIK_API_KEY", "5661784b547b335408004d7156724d060c42de5ca8f2a46b3");
 
 		try {
 			// check the status of the API key
