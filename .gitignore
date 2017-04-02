@@ -4,6 +4,7 @@ out
 .project
 .settings
 *.iml
+the-file-name.txt
 /bin/
 /target/
 lib
