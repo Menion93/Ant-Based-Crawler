@@ -32,5 +32,10 @@
   		<artifactId>webarchive-commons</artifactId>
   		<version>1.1.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.neo4j</groupId>
+  		<artifactId>neo4j</artifactId>
+  		<version>3.0.0-M04</version>
+  	</dependency>
   </dependencies>
 </project>
