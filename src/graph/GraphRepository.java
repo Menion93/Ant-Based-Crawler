@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.archive.io.ArchiveReader;
@@ -54,40 +56,18 @@ public class GraphRepository{
 	 * @param get
 	 * @param http
 	 */
-	public void insertNode(String get, String http){
+	public void insertNode(String get, String http, String[] links){
 		try(Transaction tx = graphDB.beginTx()){
 			Node node = graphDB.createNode();
 			node.setProperty("HTTP GET", get);
 			node.setProperty("payload", http);
+			node.setProperty("links", links);
 
-			System.out.print(node.getProperty("HTTP GET"));
-			System.out.print(node.getProperty("payload"));
 
 			tx.success();
 		}
 	}
-
-	/**
-	 * retrieves all nodes in the graph DB and writes them on file "the-file-name.txt"
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 */
-	public void printAllNodes() throws FileNotFoundException, UnsupportedEncodingException{
-		try ( Transaction tx = graphDB.beginTx() )
-		{
-		    PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
-			ResourceIterable<Node> iterable = graphDB.getAllNodes();
-			for (Node node : iterable) {
-//				System.out.println(node.getProperty("HTTP GET"));
-				writer.println(node.getProperty("HTTP GET"));
-//				System.out.println(node.getProperty("payload"));
-				writer.println(node.getProperty("payload"));
-				writer.println("********************************************");
-			}
-			writer.close();
-		}
-	}
-
+	
 	/**
 	 * loads a WARC file
 	 * @param warcPath
@@ -98,6 +78,8 @@ public class GraphRepository{
 		ArchiveReader ar = WARCReaderFactory.get(warcPath, is, true);
 
 		String get = null, http;
+	    LinkParser linkParser = new LinkParser();
+		List<String> links = new LinkedList<>();
 		int i = 0;
 		for(ArchiveRecord r : ar) {		
 			byte[] rawData = IOUtils.toByteArray(r, r.available());
@@ -107,9 +89,41 @@ public class GraphRepository{
 				get = content;
 			if(i % 3 == 2){
 				http = content;
-				insertNode(get, http);
+				links = linkParser.getLinks(content);
+				insertNode(get, http, links.toArray(new String[links.size()]));
+				System.out.println("Record: " + (i / 3));
 			}
-			if (i++ > 50) break; 
+			i++;
+//			if (i++ > 10000) break; 
+		}
+	}
+
+	/**
+	 * retrieves all nodes in the graph DB and writes them on file "the-file-name.txt"
+	 * @throws IOException 
+	 */
+	public void printAllNodes() throws IOException{
+		try ( Transaction tx = graphDB.beginTx() )
+		{
+		    PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+		    LinkParser linkParser = new LinkParser();
+			ResourceIterable<Node> iterable = graphDB.getAllNodes();
+			for (Node node : iterable) {
+				String get = (String) node.getProperty("HTTP GET");
+//				System.out.println(get);
+				writer.println(get);
+				
+				String payload = (String) node.getProperty("payload");
+//				System.out.println(payload);
+//				System.out.println("********************************************");
+				writer.println(payload);
+				String[] links = (String[]) node.getProperty("links");
+				for (int i = 0; i < links.length; i++) {
+					writer.println(links[i]);
+				}
+				writer.println("********************************************");
+			}
+			writer.close();
 		}
 	}
 
