@@ -1,4 +1,4 @@
-package graph;
+package graphBuilding;
 
 /**
  * Handler for:	January 2017 Index

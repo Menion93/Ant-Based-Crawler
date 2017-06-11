@@ -1,4 +1,4 @@
-package graph;
+package graphBuilding;
 
 public class TestLine {
 

@@ -1,7 +1,8 @@
-package graph;
+package graphBuilding;
  
 import java.io.IOException;
- 
+
+import graph.GraphRepository;
 import org.joda.time.DateTime;
  
 public class ProvaNeo4j {
@@ -12,7 +13,7 @@ public class ProvaNeo4j {
         // String warcPath = "/home/nicholas/Documenti/ProgettoSII/project/CommonCrawl/compressed CC-MAIN-20170116095119-00000-ip-10-171-10-70.ec2.internal.warc/CC-MAIN-20170116095119-00000-ip-10-171-10-70.ec2.internal.warc.gz";
         // String warcPath = "/Users/alex/Documents/ProgettoSII/CC-MAIN-20170116095119-00000-ip-10-171-10-70.ec2.internal.warc.gz";
 
-        GraphRepository graph = new GraphRepository();
+        GraphBuilder graph = new GraphBuilder();
         graph.createDB("");
 //        graph.insertDummy1();
 //        graph.insertDummy2();
