@@ -14,8 +14,11 @@ public class Configuration
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
 
-    private String dictionaryScoring = "DictionaryScorer";
-    private String classifierScoring = "ClassifierScorer";
+    private String scoringMethod = "DictionaryScorer";
+    //private String scoringMethod = "ClassifierScorer";
+
+    private String graphApi = "StandardWeb";
+    //private String graphApi = "CommonCrawl";
 
     private String query = "University of Rome 3";
 
@@ -32,8 +35,10 @@ public class Configuration
     }
 
     public String getScoringMethod() {
-        return dictionaryScoring;
+        return scoringMethod;
     }
+
+    public String getGraphApi(){ return graphApi; }
 
     public double getTrailUpdateCoefficient() {return trailUpdateCoefficient; }
 
