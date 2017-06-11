@@ -173,7 +173,7 @@ public class GraphBuilder {
             }
             if(i % 3 == 2){		//take all the HTML of site from "HTTP response" field and extract all link from it
                 http = content;
-                links = linkParser.getLinks(content);
+                links = linkParser.getLinks(content, "");
                 insertNode(get, http, links.toArray(new String[links.size()]));	//creates a node with values previously extracted
                 System.out.println("Record: " + (i / 3));
             }

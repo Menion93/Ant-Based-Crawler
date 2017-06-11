@@ -1,13 +1,21 @@
 package trash;
 
+import graph.GraphRepoFactory;
+import graph.GraphRepository;
 import graph.NodePage;
+import main.Configuration;
 import scorer.DictionaryScorer;
 
 public class MatcherTester {
 
 	public static void main(String[] args){
-		
-		NodePage nodePage = new NodePage();
+
+		Configuration conf = new Configuration();
+
+		GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi());
+
+		NodePage nodePage = new NodePage("dummy", repo);
+
 		nodePage.setContent("Domestic dog\n" + 
 				"Temporal range: 0.033–0 Ma\n" + 
 				"PreЄЄOSDCPTJKPgN\n" + 

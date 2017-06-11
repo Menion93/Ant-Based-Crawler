@@ -8,6 +8,10 @@ public class ScorerFactory
     String defaultScorer;
     String defaultQuery;
 
+    public ScorerFactory(){
+
+    }
+
     public ScorerFactory(String myScorer, String query){
         defaultScorer = myScorer;
         defaultQuery = query;
