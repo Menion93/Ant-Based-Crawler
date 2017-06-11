@@ -7,10 +7,10 @@ package crawler;
 import graph.GraphRepository;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import graph.NodePage;
 import scorer.ScorerFactory;
+import util.RankingComparator;
 
 public class AntBasedCrawler
 {
@@ -25,7 +25,7 @@ public class AntBasedCrawler
 
     // This map represent the id of the pages and its scoreClassifier.
     // It is a cache of the scores of the single pages
-    private HashMap<String, Double> id2score;
+    private HashMap<String, Evaluation> id2score;
 
     // Map representation of the edge and its associated trail value
     private HashMap<Edge, Double > edge2trail;
@@ -34,7 +34,7 @@ public class AntBasedCrawler
 
 
     public AntBasedCrawler(int numberOfAnts, int maxNumberOfIteration, int maxPagesToVisit,
-                           double trailUpdateCoefficient, double randomInitValue, ScorerFactory scFactory,
+                           double trailUpdateCoefficient, double randomInitValue, boolean cachePages, ScorerFactory scFactory,
                            GraphRepository graphRepo)
     {
         this.numberOfAnts = numberOfAnts;
@@ -51,11 +51,11 @@ public class AntBasedCrawler
 
         // Create all the Ants
         for(int i=0; i<numberOfAnts; i++)
-            ants.add(new Ant(scFactory.getScorer(), edge2trail, randomInitValue,  6337 + i));
+            ants.add(new Ant(scFactory.getScorer(), edge2trail, randomInitValue,  6337 + i, cachePages));
 
     }
 
-    public List<String> FetchPagesId() throws IOException {
+    public List<Map.Entry<String, Evaluation>> FetchPagesId() throws IOException {
         List<String> crawledPages = new ArrayList<>();
 
         visitedPages = 0;
@@ -64,12 +64,14 @@ public class AntBasedCrawler
         System.out.println("Starting the crawling...");
         double startTime = System.currentTimeMillis() * 1000;
 
+        // This node will keep all the graph crawled since now in memory.
+        NodePage startNode = graphRepo.getNodePageRoot();
 
         while (haltingCriterion(numberOfStep))
         {
             // Get the visited pages by the ants
             for(Ant ant : ants)
-                ant.AntCycle(id2score, graphRepo, numberOfStep);
+                ant.AntCycle(startNode, id2score, graphRepo, numberOfStep);
 
             // Update the trails
             UpdateTrails(ants, numberOfStep);
@@ -83,8 +85,11 @@ public class AntBasedCrawler
         System.out.format("The crawling has ended in %f seconds.\n", lastedTime);
         System.out.format("In mean the crawling spends about %f seconds per iteration\n", lastedTime/(numberOfStep-1));
 
+
+        List<Map.Entry<String, Evaluation>> ranking = new LinkedList<>(id2score.entrySet());
+        ranking.sort(new RankingComparator());
         // To Do: return the pages crawled, maybe a ranking?
-        return crawledPages;
+        return ranking;
     }
 
 
@@ -101,15 +106,15 @@ public class AntBasedCrawler
 
             List<Edge> path = ant.getPath();
 
-            double pathScore = id2score.get(path.get(0).getFrom());
+            double pathScore = id2score.get(path.get(0).getFrom()).getScore();
 
-            for(int j = 0; j<numberOfStep; j++)
+            for(Edge e : path)
             {
-                pathScore += id2score.get(path.get(j).getTo());
+                pathScore += id2score.get(e.getTo()).getScore();
             }
 
             // Normalization
-            pathScore /= (numberOfStep+1);
+            pathScore /= (path.size()+1);
 
             // Update the trail score of the visited page by this ant
             for(Edge e : path)
@@ -121,8 +126,7 @@ public class AntBasedCrawler
     }
 
     // It counts the same pages multiple times, need to find a better halting criterion
-    private boolean haltingCriterion(int numberOfStep)
-    {
+    private boolean haltingCriterion(int numberOfStep){
         return (visitedPages + numberOfAnts * numberOfStep) <= maxPagesToVisit;
     }
 

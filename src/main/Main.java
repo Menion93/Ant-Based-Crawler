@@ -27,6 +27,7 @@ public class Main
                                       conf.getMaxPagesToVisit(),
                                       conf.getTrailUpdateCoefficient(),
                                       conf.getRandomInitValue(),
+                                      conf.canCachePages(),
                                       scorerFactory,
                                       graphRepo);
 

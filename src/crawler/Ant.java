@@ -20,42 +20,60 @@ public class Ant
     private Scorer scorer;
     private Random randomGenerator;
     private double randomInitValue;
+    private boolean cachePages;
+
 
     HashMap<Edge, Double > edge2trail;
 
 
-    public Ant(Scorer scorer, HashMap<Edge, Double > edge2trail, double randomInitValue, int seed){
+    public Ant(Scorer scorer, HashMap<Edge, Double > edge2trail, double randomInitValue, int seed, boolean cachePages){
         this.path = new ArrayList<>();
         this.scorer = scorer;
         this.edge2trail = edge2trail;
         this.randomInitValue = randomInitValue;
+        this.cachePages = cachePages;
         randomGenerator = new Random(seed);
 
     }
 
 
-    public void AntCycle(HashMap<String,Double> id2score, GraphRepository graphRepo, int numberOfStep) throws IOException {
+    public void AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep) throws IOException {
 
+        this.path = new ArrayList<>();
 
-        // Start the iteration of the i-th ant
-        NodePage currentNode = graphRepo.getNodePageRoot();
+        NodePage currentNode = startNode;
 
         if(!id2score.containsKey(currentNode.getId()))
         {
-            id2score.put(currentNode.getId(), scorer.predictScore(currentNode));
-            currentNode.freeContentMemory();
+            id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode), 0));
+            if(!cachePages)
+                currentNode.freeContentMemory();
         }
 
         for(int j=0; j<numberOfStep;j++)
         {
             List<NodePage> frontier = graphRepo.expandNode(currentNode);
 
+            if (frontier == null)
+                return;
+
             NodePage successorNode = selectNode(currentNode, frontier);
+
+            while(path.contains(successorNode) && frontier.size() > 0){
+                frontier.remove(successorNode);
+                successorNode = selectNode(currentNode, frontier);
+            }
+
+            if(successorNode == null)
+                return;
+
+            if(path.contains(successorNode))
 
             if(!id2score.containsKey(successorNode.getId()))
             {
-                id2score.put(successorNode.getId(), scorer.predictScore(successorNode));
-                successorNode.freeContentMemory();
+                id2score.put(successorNode.getId(), new Evaluation( scorer.predictScore(successorNode), j));
+                if(!cachePages)
+                    successorNode.freeContentMemory();
             }
 
             path.add(new Edge(currentNode.getId(), successorNode.getId()));
@@ -69,6 +87,9 @@ public class Ant
     // if it is the last iteration
     private NodePage selectNode(NodePage currentNode, List<NodePage> frontier)
     {
+        if(frontier.size() == 0)
+            return null;
+
         double[] trailsProba = new double[frontier.size()];
         double sumTrails = 0;
 

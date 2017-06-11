@@ -13,6 +13,7 @@ public class Configuration
     private int maxNumberOfIteration = 100;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
+    private boolean cachePages = true;
 
     private String scoringMethod = "DictionaryScorer";
     //private String scoringMethod = "ClassifierScorer";
@@ -37,6 +38,8 @@ public class Configuration
     public String getScoringMethod() {
         return scoringMethod;
     }
+
+    public boolean canCachePages(){ return cachePages;}
 
     public String getGraphApi(){ return graphApi; }
 
