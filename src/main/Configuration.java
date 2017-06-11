@@ -21,7 +21,7 @@ public class Configuration
     private String graphApi = "StandardWeb";
     //private String graphApi = "CommonCrawl";
 
-    private String query = "University of Rome 3";
+    private String query = "gtx 1080";
 
     public int getNumberOfAnts() {
         return numberOfAnts;

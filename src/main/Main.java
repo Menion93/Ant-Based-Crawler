@@ -3,12 +3,15 @@ package main; /**
  */
 
 import crawler.AntBasedCrawler;
+import crawler.Evaluation;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
 import scorer.ScorerFactory;
 import scorer.Scorer;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class Main
 {
@@ -31,7 +34,11 @@ public class Main
                                       scorerFactory,
                                       graphRepo);
 
-        antCrawler.FetchPagesId();
+        List<Map.Entry<String, Evaluation>> entries = antCrawler.FetchPagesId();
+
+        for(Map.Entry<String, Evaluation> entry : entries){
+            System.out.println(entry.getKey() + " - " + entry.getValue().getScore());
+        }
 
         System.out.println("End");
 
