@@ -11,16 +11,34 @@ import org.jsoup.select.Elements;
 
 public class LinkParser {
 
-	public List<String> getLinks(String html) throws IOException {
+	public List<String> getLinks(String html, String url) throws IOException {
 
 		Document doc = Jsoup.parse(html);
 		Elements links = doc.select("a[href]");
 		List<String> linksList = new LinkedList<>();
 
-		for (Element link : links) 
-			linksList.add(String.format("%s", link.attr("href"), trim(link.text(), 35)));
-		
+		for (Element link : links) {
+			String parsedLink = String.format("%s", link.attr("href"), trim(link.text(), 35));
+
+			if(parsedLink.startsWith("http://"))
+				linksList.add(parsedLink);
+			else if(!parsedLink.startsWith("#"))
+				linksList.add(cleanLink(parsedLink, url));
+
+		}
+		System.out.println("");
+
 		return linksList;
+	}
+
+	private String cleanLink(String link, String url){
+		if(url.endsWith("/") && link.startsWith("/"))
+			return url + link.substring(1);
+
+		if(!url.endsWith("/") && !link.startsWith("/"))
+			return url + "/" +link.substring(1);
+
+		return url + link;
 	}
 
 
