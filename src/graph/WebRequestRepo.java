@@ -21,35 +21,6 @@ public class WebRequestRepo extends GraphRepository{
     }
 
     @Override
-    public List<NodePage> expandNode(NodePage nodePage) throws IOException {
-
-        if(nodePage.hasNoSuccessor())
-            return null;
-
-        if (!nodePage.hasNoSuccessor() && nodePage.getSuccessors().size() != 0)
-            return nodePage.getSuccessors();
-
-        List<NodePage> nodeSuccessors = new ArrayList<>();
-
-        String body = nodePage.getContent();
-
-        List<String> links = super.parser.getLinks(body);
-
-        if(links.size() == 0){
-            nodePage.hasNoSuccessor(true);
-            return null;
-        }
-
-        for(String link : links){
-            nodeSuccessors.add(new NodePage(link, this));
-        }
-
-        nodePage.setSuccessors(nodeSuccessors);
-
-        return nodeSuccessors;
-    }
-
-    @Override
     public String getContentPage(String id) {
         return HttpRequest.get(id).body();
     }
