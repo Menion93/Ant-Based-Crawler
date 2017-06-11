@@ -59,19 +59,19 @@ public class AntBasedCrawler
         List<String> crawledPages = new ArrayList<>();
 
         visitedPages = 0;
-        int numberOfStep = 0;
+        int numberOfStep = 1;
 
         System.out.println("Starting the crawling...");
-        double startTime = System.currentTimeMillis() * 1000;
+        double startTime = System.currentTimeMillis() / 1000;
 
         // This node will keep all the graph crawled since now in memory.
         NodePage startNode = graphRepo.getNodePageRoot();
 
-        while (haltingCriterion(numberOfStep))
+        while (visitedPages<maxPagesToVisit)
         {
             // Get the visited pages by the ants
             for(Ant ant : ants)
-                ant.AntCycle(startNode, id2score, graphRepo, numberOfStep);
+                visitedPages += ant.AntCycle(startNode, id2score, graphRepo, numberOfStep, visitedPages, maxPagesToVisit);
 
             // Update the trails
             UpdateTrails(ants, numberOfStep);
@@ -80,7 +80,7 @@ public class AntBasedCrawler
             numberOfStep++;
         }
 
-        double lastedTime = (System.currentTimeMillis() * 1000) - startTime;
+        double lastedTime = (System.currentTimeMillis() / 1000) - startTime;
 
         System.out.format("The crawling has ended in %f seconds.\n", lastedTime);
         System.out.format("In mean the crawling spends about %f seconds per iteration\n", lastedTime/(numberOfStep-1));
@@ -106,6 +106,9 @@ public class AntBasedCrawler
 
             List<Edge> path = ant.getPath();
 
+            if(path.size() == 0)
+                continue;
+
             double pathScore = id2score.get(path.get(0).getFrom()).getScore();
 
             for(Edge e : path)
@@ -124,12 +127,5 @@ public class AntBasedCrawler
         }
 
     }
-
-    // It counts the same pages multiple times, need to find a better halting criterion
-    private boolean haltingCriterion(int numberOfStep){
-        return (visitedPages + numberOfAnts * numberOfStep) <= maxPagesToVisit;
-    }
-
-
 
 }

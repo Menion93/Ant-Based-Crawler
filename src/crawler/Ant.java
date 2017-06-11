@@ -37,9 +37,12 @@ public class Ant
     }
 
 
-    public void AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep) throws IOException {
+    public int AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep, int visitedPages, int maxPagesToVisit) throws IOException {
 
         this.path = new ArrayList<>();
+
+        if(visitedPages >= maxPagesToVisit)
+            return visitedPages;
 
         NodePage currentNode = startNode;
 
@@ -48,14 +51,21 @@ public class Ant
             id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode), 0));
             if(!cachePages)
                 currentNode.freeContentMemory();
+
+            visitedPages++;
+
+            if(visitedPages >= maxPagesToVisit)
+                return visitedPages;
         }
 
         for(int j=0; j<numberOfStep;j++)
         {
             List<NodePage> frontier = graphRepo.expandNode(currentNode);
 
-            if (frontier == null)
-                return;
+            if (frontier == null){
+                System.out.println("Frontier is null");
+                return visitedPages;
+            }
 
             NodePage successorNode = selectNode(currentNode, frontier);
 
@@ -64,23 +74,31 @@ public class Ant
                 successorNode = selectNode(currentNode, frontier);
             }
 
-            if(successorNode == null)
-                return;
+            if(successorNode == null) {
+                System.out.println("Found a loop, exiting this ant cycle");
+                return visitedPages;
+            }
 
-            if(path.contains(successorNode))
 
             if(!id2score.containsKey(successorNode.getId()))
             {
                 id2score.put(successorNode.getId(), new Evaluation( scorer.predictScore(successorNode), j));
                 if(!cachePages)
                     successorNode.freeContentMemory();
+
+                visitedPages++;
             }
 
             path.add(new Edge(currentNode.getId(), successorNode.getId()));
 
+
+            if(visitedPages >= maxPagesToVisit)
+                return visitedPages;
+
             currentNode = successorNode;
         }
 
+        return visitedPages;
     }
 
     // To do: select a node with probability according to the trail, or randomValue
