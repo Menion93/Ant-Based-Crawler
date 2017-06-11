@@ -1,23 +1,31 @@
 package graph;
 
+import com.github.kevinsawicki.http.HttpRequest;
+
 /**
  * Created by Andrea on 06/03/2017.
  */
 public class NodePage
 {
-    double id;
+    String id;
     String content;
+    GraphRepository repo;
 
-    public NodePage()
+    public NodePage(String id, GraphRepository repo)
     {
-        content = "";
+        this.content = null;
+        this.id = id;
+        this.repo = repo;
     }
 
-    public double getId() {
+    public String getId() {
         return id;
     }
 
     public String getContent() {
+
+        if(content == null)
+            content = repo.getContentPage(this.id);
         return content;
     }
     
@@ -27,7 +35,7 @@ public class NodePage
 
     public void freeContentMemory()
     {
-        content = "";
+        content = null;
     }
 
     /**
