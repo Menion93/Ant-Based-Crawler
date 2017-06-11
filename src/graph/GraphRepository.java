@@ -84,7 +84,7 @@ public class GraphRepository{
 
 		String get = null, http;
 		LinkParser linkParser = new LinkParser();
-		List<String> links = new LinkedList<>();
+		List<String> links;
 		int i = 0;
 		/* iterates on each record of the WARC file, where a record could be the field "HTTP GET" of the web page,
 		 * the field "HTTP response" that contains the HTML code of the web page and the field "fetch time", 
@@ -145,11 +145,13 @@ public class GraphRepository{
 				System.out.println("*************\nNODO:\t" + node.getProperty(GET));
 				String[] nodeLinks = (String[]) node.getProperty(LINKS);
 				int notPresentLinks = 0;
-				
+
+				String url, dns = (String) node.getProperty(GET);
+				if(dns.contains("/"))
+					dns = dns.substring(0, dns.indexOf('/'));
+
 				for (String path : nodeLinks) {
-					String url, dns = (String) node.getProperty(GET);
-					if(dns.contains("/"))
-						dns = dns.substring(0, dns.indexOf('/'));
+
 					/* there are links in this form "/partnership" and are meant to be link to a page of the same site
 					 * and for our task we create the URL as follows */
 					if(path.length() > 0 && path.charAt(0) == '/')
