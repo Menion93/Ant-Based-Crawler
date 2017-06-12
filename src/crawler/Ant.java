@@ -41,6 +41,8 @@ public class Ant
 
         this.path = new ArrayList<>();
 
+        int currentVisitedPages = 0;
+
         if(visitedPages >= maxPagesToVisit)
             return visitedPages;
 
@@ -52,10 +54,12 @@ public class Ant
             if(!cachePages)
                 currentNode.freeContentMemory();
 
-            visitedPages++;
+            System.out.println("UNA VOLTA SOLA\n\n\n");
 
-            if(visitedPages >= maxPagesToVisit)
-                return visitedPages;
+            currentVisitedPages++;
+
+            if(visitedPages+currentVisitedPages >= maxPagesToVisit)
+                return currentVisitedPages;
         }
 
         for(int j=0; j<numberOfStep;j++)
@@ -64,7 +68,7 @@ public class Ant
 
             if (frontier == null){
                 System.out.println("Frontier is null");
-                return visitedPages;
+                return currentVisitedPages;
             }
 
             NodePage successorNode = selectNode(currentNode, frontier);
@@ -76,7 +80,7 @@ public class Ant
 
             if(successorNode == null) {
                 System.out.println("Found a loop, exiting this ant cycle");
-                return visitedPages;
+                return currentVisitedPages;
             }
 
 
@@ -86,19 +90,19 @@ public class Ant
                 if(!cachePages)
                     successorNode.freeContentMemory();
 
-                visitedPages++;
+                currentVisitedPages++;
             }
 
             path.add(new Edge(currentNode.getId(), successorNode.getId()));
 
 
-            if(visitedPages >= maxPagesToVisit)
-                return visitedPages;
+            if(visitedPages + currentVisitedPages >= maxPagesToVisit)
+                return currentVisitedPages;
 
             currentNode = successorNode;
         }
 
-        return visitedPages;
+        return currentVisitedPages;
     }
 
     // To do: select a node with probability according to the trail, or randomValue
