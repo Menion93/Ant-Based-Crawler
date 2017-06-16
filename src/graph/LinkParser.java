@@ -22,16 +22,27 @@ public class LinkParser {
 
 			if(parsedLink.startsWith("http://"))
 				linksList.add(parsedLink);
-			else if(!parsedLink.startsWith("#"))
+			else if(!parsedLink.startsWith("#") && !parsedLink.equals(""))
 				linksList.add(cleanLink(parsedLink, url));
 
 		}
-		System.out.println("");
 
 		return linksList;
 	}
 
 	private String cleanLink(String link, String url){
+
+		if(link.equals("/"))
+			return url;
+
+		if(link.length() == 1){
+
+			if(url.endsWith("/"))
+				return url + link;
+
+			return url + "/" +link;
+		}
+
 		if(url.endsWith("/") && link.startsWith("/"))
 			return url + link.substring(1);
 
