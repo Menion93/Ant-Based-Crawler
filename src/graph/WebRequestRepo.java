@@ -2,14 +2,14 @@ package graph;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Andrea on 11/06/2017.
  */
 public class WebRequestRepo extends GraphRepository{
+
+    // In milliseconds;
+    private int TIMEOUT = 2000;
 
     public WebRequestRepo(){
         super();
@@ -22,6 +22,16 @@ public class WebRequestRepo extends GraphRepository{
 
     @Override
     public String getContentPage(String id) {
-        return HttpRequest.get(id).body();
+
+        String body="";
+        try{
+            body = HttpRequest.get(id).connectTimeout(TIMEOUT).body();
+        }
+        catch (Exception e){
+            System.out.println("Request Failed, returning an empty body");
+        }
+        finally {
+            return body;
+        }
     }
 }

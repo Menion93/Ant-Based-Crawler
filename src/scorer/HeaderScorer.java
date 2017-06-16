@@ -9,10 +9,10 @@ import org.jsoup.select.Elements;
 /**
  * Created by Andrea on 05/03/2017.
  */
-public class ClassifierScorer extends Scorer
+public class HeaderScorer extends Scorer
 {
 
-    public ClassifierScorer(String query)
+    public HeaderScorer(String query)
     {
         super(query);
     }
@@ -23,36 +23,45 @@ public class ClassifierScorer extends Scorer
         double resultScore = 0;
 
         String content = nodePage.getContent();
-        Document doc = Jsoup.parse(content);
+        //System.out.println(nodePage.getId());
 
-        // Get the title and compute the hit
-        String title = doc.title();
-        resultScore += countPercentageHit(title);
+        try{
+            Document doc = Jsoup.parse(content);
+
+            // Get the title and compute the hit
+            String title = doc.title();
+            resultScore += countPercentageHit(title);
 
 
-        Elements meta = doc.select("meta[name=description]");
+            Elements meta = doc.select("meta[name=description]");
 
-        // Get the description if the page has one and compute the hit
-        String description = null;
+            // Get the description if the page has one and compute the hit
+            String description = null;
 
-        if(meta != null){
-            description = meta.attr("content");
-            resultScore += countPercentageHit(description);
+            if(meta != null){
+                description = meta.attr("content");
+                resultScore += countPercentageHit(description);
+            }
+
+            // Get the h1 if the page has one and compute the hit
+            Elements h1 = doc.select("h1");
+
+            double currentPercentage = 0;
+
+            for(Element e : h1){
+                double temp = countPercentageHit(e.text());
+
+                if(currentPercentage < temp)
+                    currentPercentage = temp;
+            }
+
+            resultScore += currentPercentage;
         }
-
-        // Get the h1 if the page has one and compute the hit
-        Elements h1 = doc.select("h1");
-
-        double currentPercentage = 0;
-
-        for(Element e : h1){
-            double temp = countPercentageHit(e.text());
-
-            if(currentPercentage < temp)
-                currentPercentage = temp;
+        catch (Exception e){
+            System.out.println("Parser failed for some reason");
+            return 0;
         }
-
-        resultScore += currentPercentage;
+        //System.out.println("A score has been assigned!");
 
         return resultScore;
     }
