@@ -25,9 +25,9 @@ public class ScorerFactory
             return new DictionaryScorer(query);
         }
 
-        if(myScorer == "ClassifierScorer")
+        if(myScorer == "HeaderScorer")
         {
-            return new ClassifierScorer(query);
+            return new HeaderScorer(query);
         }
 
         System.out.println("Scoring method not supported!");
@@ -41,9 +41,9 @@ public class ScorerFactory
             return new DictionaryScorer(defaultQuery);
         }
 
-        if(defaultScorer == "ClassifierScorer")
+        if(defaultScorer == "HeaderScorer")
         {
-            return new ClassifierScorer(defaultQuery);
+            return new HeaderScorer(defaultQuery);
         }
         return null;
 

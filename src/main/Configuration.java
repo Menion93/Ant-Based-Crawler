@@ -9,14 +9,13 @@ import scorer.*;
 public class Configuration
 {
     private int numberOfAnts = 100;
-    private int maxPagesToVisit = 1000;
-    private int maxNumberOfIteration = 100;
+    private int maxPagesToVisit = 4000;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
     private boolean cachePages = true;
 
-    private String scoringMethod = "DictionaryScorer";
-    //private String scoringMethod = "ClassifierScorer";
+    //private String scoringMethod = "DictionaryScorer";
+    private String scoringMethod = "HeaderScorer";
 
     private String graphApi = "StandardWeb";
     //private String graphApi = "CommonCrawl";
@@ -29,10 +28,6 @@ public class Configuration
 
     public int getMaxPagesToVisit() {
         return maxPagesToVisit;
-    }
-
-    public int getMaxNumberOfIteration() {
-        return maxNumberOfIteration;
     }
 
     public String getScoringMethod() {

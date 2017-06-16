@@ -17,7 +17,6 @@ public class AntBasedCrawler
 
     private int numberOfAnts;
     private int maxPagesToVisit;
-    private int maxNumberOfIteration ;
     private int visitedPages;
     private double trailUpdateCoefficient;
 
@@ -33,12 +32,11 @@ public class AntBasedCrawler
     private List<Ant> ants;
 
 
-    public AntBasedCrawler(int numberOfAnts, int maxNumberOfIteration, int maxPagesToVisit,
+    public AntBasedCrawler(int numberOfAnts, int maxPagesToVisit,
                            double trailUpdateCoefficient, double randomInitValue, boolean cachePages, ScorerFactory scFactory,
                            GraphRepository graphRepo)
     {
         this.numberOfAnts = numberOfAnts;
-        this.maxNumberOfIteration = maxNumberOfIteration;
         this.maxPagesToVisit = maxPagesToVisit;
         this.trailUpdateCoefficient = trailUpdateCoefficient;
 
@@ -69,12 +67,19 @@ public class AntBasedCrawler
 
         while (visitedPages<maxPagesToVisit)
         {
+            System.out.println("Starting #" + numberOfStep + " iteration...");
             // Get the visited pages by the ants
             for(Ant ant : ants)
                 visitedPages += ant.AntCycle(startNode, id2score, graphRepo, numberOfStep, visitedPages, maxPagesToVisit);
 
+            System.out.println("Visited pages: " + visitedPages);
+            System.out.println("Now updating the scores...");
+
+
             // Update the trails
             UpdateTrails(ants, numberOfStep);
+
+            System.out.println("Score update ended");
 
             // Increment the step of the ants can take by one
             numberOfStep++;

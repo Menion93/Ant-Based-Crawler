@@ -27,6 +27,7 @@ import org.neo4j.io.fs.FileUtils;
 public abstract class GraphRepository{
 
 	public String seed = "http://www.hwupgrade.it/forum/";
+	//public String seed = "http://www.fotografidigitali.it/software-fotografia/software-fotografia/";
 
 	LinkParser parser;
 

@@ -26,7 +26,6 @@ public class Main
 
         AntBasedCrawler antCrawler
                 = new AntBasedCrawler(conf.getNumberOfAnts(),
-                                      conf.getMaxNumberOfIteration(),
                                       conf.getMaxPagesToVisit(),
                                       conf.getTrailUpdateCoefficient(),
                                       conf.getRandomInitValue(),
