@@ -44,7 +44,7 @@ public class Ant
         int currentVisitedPages = 0;
 
         if(visitedPages >= maxPagesToVisit)
-            return visitedPages;
+            return currentVisitedPages;
 
         NodePage currentNode = startNode;
 
@@ -53,8 +53,6 @@ public class Ant
             id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode), 0));
             if(!cachePages)
                 currentNode.freeContentMemory();
-
-            System.out.println("UNA VOLTA SOLA\n\n\n");
 
             currentVisitedPages++;
 
