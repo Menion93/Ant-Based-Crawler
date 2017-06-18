@@ -6,13 +6,16 @@ import graph.NodePage;
 import main.Configuration;
 import scorer.DictionaryScorer;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class MatcherTester {
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException, SQLException {
 
 		Configuration conf = new Configuration();
 
-		GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi());
+		GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi(), conf.isFocusingOnSingleSite(), conf.getSeedUrl(), conf.getSuffix());
 
 		NodePage nodePage = new NodePage("dummy", repo);
 

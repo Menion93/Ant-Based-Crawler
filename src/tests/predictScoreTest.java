@@ -8,6 +8,9 @@ import scorer.Scorer;
 import scorer.ScorerFactory;
 import main.Configuration;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 
 /**
  * Created by Andrea on 13/03/2017.
@@ -15,11 +18,10 @@ import main.Configuration;
 public class predictScoreTest
 {
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws IOException, SQLException {
         Configuration conf = new Configuration();
 
-        GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi());
+        GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi(), conf.isFocusingOnSingleSite(), conf.getSeedUrl(), conf.getSuffix());
 
         ScorerFactory scorerFactory = new ScorerFactory();
         Scorer scorer = scorerFactory.getScorer(conf.getScoringMethod(), conf.getQuery());

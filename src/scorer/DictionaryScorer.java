@@ -1,5 +1,7 @@
 package scorer;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +21,7 @@ public class DictionaryScorer extends Scorer {
 		super(query);
     }
     
-    public double predictScore(NodePage nodePage){
+    public double predictScore(NodePage nodePage) throws UnsupportedEncodingException, SQLException {
     	String content = nodePage.getContent();
     	double dimNode = nodePage.getSizeWords();
     	

@@ -6,6 +6,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+
 /**
  * Created by Andrea on 05/03/2017.
  */
@@ -18,12 +21,12 @@ public class HeaderScorer extends Scorer
     }
 
     // It checks the hit on the h1, meta descriptions and the title, and calculate a score
-    public double predictScore(NodePage nodePage) {
+    public double predictScore(NodePage nodePage) throws UnsupportedEncodingException, SQLException {
 
         double resultScore = 0;
 
         String content = nodePage.getContent();
-        //System.out.println(nodePage.getId());
+        //System.out.println(content);
 
         try{
             Document doc = Jsoup.parse(content);
@@ -31,7 +34,6 @@ public class HeaderScorer extends Scorer
             // Get the title and compute the hit
             String title = doc.title();
             resultScore += countPercentageHit(title);
-
 
             Elements meta = doc.select("meta[name=description]");
 
