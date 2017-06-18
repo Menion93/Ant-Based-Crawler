@@ -7,6 +7,7 @@ package crawler;
 import graph.GraphRepository;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import graph.NodePage;
 import scorer.ScorerFactory;
@@ -17,7 +18,7 @@ public class AntBasedCrawler
 
     private int numberOfAnts;
     private int maxPagesToVisit;
-    private int visitedPages;
+    private int maxNumberOfIteration;
     private double trailUpdateCoefficient;
 
     private GraphRepository graphRepo;
@@ -32,12 +33,13 @@ public class AntBasedCrawler
     private List<Ant> ants;
 
 
-    public AntBasedCrawler(int numberOfAnts, int maxPagesToVisit,
+    public AntBasedCrawler(int numberOfAnts, int maxPagesToVisit, int maxNumberOfIteration,
                            double trailUpdateCoefficient, double randomInitValue, boolean cachePages, ScorerFactory scFactory,
                            GraphRepository graphRepo)
     {
         this.numberOfAnts = numberOfAnts;
         this.maxPagesToVisit = maxPagesToVisit;
+        this.maxNumberOfIteration = maxNumberOfIteration;
         this.trailUpdateCoefficient = trailUpdateCoefficient;
 
         id2score = new HashMap<>();
@@ -53,10 +55,10 @@ public class AntBasedCrawler
 
     }
 
-    public List<Map.Entry<String, Evaluation>> FetchPagesId() throws IOException {
+    public List<Map.Entry<String, Evaluation>> FetchPagesId() throws IOException, SQLException {
         List<String> crawledPages = new ArrayList<>();
 
-        visitedPages = 0;
+        int visitedPages = 0;
         int numberOfStep = 1;
 
         System.out.println("Starting the crawling...");
@@ -65,9 +67,10 @@ public class AntBasedCrawler
         // This node will keep all the graph crawled since now in memory.
         NodePage startNode = graphRepo.getNodePageRoot();
 
-        while (visitedPages<maxPagesToVisit)
+        while (visitedPages<maxPagesToVisit && numberOfStep < maxNumberOfIteration + 1)
         {
             System.out.println("Starting #" + numberOfStep + " iteration...");
+
             // Get the visited pages by the ants
             for(Ant ant : ants)
                 visitedPages += ant.AntCycle(startNode, id2score, graphRepo, numberOfStep, visitedPages, maxPagesToVisit);
