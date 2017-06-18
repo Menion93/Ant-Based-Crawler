@@ -7,26 +7,30 @@ import crawler.Evaluation;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
 import scorer.ScorerFactory;
-import scorer.Scorer;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class Main
 {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         Configuration conf = new Configuration();
 
         ScorerFactory scorerFactory = new ScorerFactory(conf.getScoringMethod(), conf.getQuery());
         GraphRepoFactory graphFactory = new GraphRepoFactory();
 
-        GraphRepository graphRepo = graphFactory.getGraphApi(conf.getGraphApi());
+        GraphRepository graphRepo = graphFactory.getGraphApi(conf.getGraphApi(),
+                                                             conf.isFocusingOnSingleSite(),
+                                                             conf.getSeedUrl(),
+                                                             conf.getSuffix());
 
         AntBasedCrawler antCrawler
                 = new AntBasedCrawler(conf.getNumberOfAnts(),
                                       conf.getMaxPagesToVisit(),
+                                      conf.getMaxNumberOfIteration(),
                                       conf.getTrailUpdateCoefficient(),
                                       conf.getRandomInitValue(),
                                       conf.canCachePages(),

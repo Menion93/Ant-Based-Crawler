@@ -4,23 +4,33 @@ package main; /**
  * This class define the behaviour of the ant based crawler
  *
  */
-import scorer.*;
 
 public class Configuration
 {
     private int numberOfAnts = 100;
-    private int maxPagesToVisit = 4000;
+    private int maxPagesToVisit = 100;
+    private int maxNumberOfIteration = 100;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
     private boolean cachePages = true;
+    private boolean focusOnSingleSite = true;
+
+    private String suffix = "/forum/";
+    //private String suffix = "/";
+
+    private String seedUrl = "http://www.hwupgrade.it/forum/forumdisplay.php?f=22";
+    //private String seedUrl = "http://www.hwupgrade.it/forum/";
+
+    //private String query = "modem";
+    private String query = "ps4";
 
     //private String scoringMethod = "DictionaryScorer";
     private String scoringMethod = "HeaderScorer";
 
     private String graphApi = "StandardWeb";
-    //private String graphApi = "CommonCrawl";
+    //private String graphApi = "CommonCrawlRepo";
 
-    private String query = "gtx 1080";
+
 
     public int getNumberOfAnts() {
         return numberOfAnts;
@@ -29,6 +39,8 @@ public class Configuration
     public int getMaxPagesToVisit() {
         return maxPagesToVisit;
     }
+
+    public int getMaxNumberOfIteration(){ return maxNumberOfIteration; }
 
     public String getScoringMethod() {
         return scoringMethod;
@@ -42,7 +54,15 @@ public class Configuration
 
     public double getRandomInitValue() { return randomInitValue; }
 
+    public String getSeedUrl(){ return seedUrl; }
+
     public String getQuery() {
         return query;
+    }
+
+    public boolean isFocusingOnSingleSite(){ return focusOnSingleSite; }
+
+    public String getSuffix() {
+        return suffix;
     }
 }

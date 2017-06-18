@@ -11,8 +11,8 @@ public class WebRequestRepo extends GraphRepository{
     // In milliseconds;
     private int TIMEOUT = 2000;
 
-    public WebRequestRepo(){
-        super();
+    public WebRequestRepo(boolean focusOnSinglePage, String seedUrl, String suffix){
+        super(focusOnSinglePage, seedUrl, suffix);
     }
 
     @Override

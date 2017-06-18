@@ -1,9 +1,7 @@
 package graph;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,18 +24,20 @@ import org.neo4j.io.fs.FileUtils;
 
 public abstract class GraphRepository{
 
-	public String seed = "http://www.hwupgrade.it/forum/";
-	//public String seed = "http://www.fotografidigitali.it/software-fotografia/software-fotografia/";
+	protected String seed;
 
+	private boolean focusOnSinglePage;
 	LinkParser parser;
 
-	public GraphRepository(){
-		parser = new LinkParser();
+	public GraphRepository(boolean focusOnSinglePage, String seedUrl, String suffix){
+		this.parser = new LinkParser(suffix);
+		this.focusOnSinglePage = focusOnSinglePage;
+		this.seed  = seedUrl;
 	}
 
 	public abstract NodePage getNodePageRoot();
 
-	public List<NodePage> expandNode(NodePage nodePage) throws IOException {
+	public List<NodePage> expandNode(NodePage nodePage) throws IOException, SQLException {
 
 		if(nodePage.hasNoSuccessor())
 			return null;
@@ -49,8 +49,7 @@ public abstract class GraphRepository{
 
 		String body = nodePage.getContent();
 
-		List<String> links = parser.getLinks(body, nodePage.getId());
-
+		List<String> links = parser.getLinks(body, nodePage.getId(), focusOnSinglePage);
 
 		if(links.size() == 0){
 			nodePage.hasNoSuccessor(true);
@@ -66,6 +65,6 @@ public abstract class GraphRepository{
 		return nodeSuccessors;
 	}
 
-	public abstract String getContentPage(String id);
+	public abstract String getContentPage(String id) throws UnsupportedEncodingException, SQLException;
 
 }

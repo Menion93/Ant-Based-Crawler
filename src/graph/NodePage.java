@@ -2,6 +2,8 @@ package graph;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class NodePage
         return id;
     }
 
-    public String getContent() {
+    public String getContent() throws UnsupportedEncodingException, SQLException {
 
         if(content == null)
             content = repo.getContentPage(this.id);
