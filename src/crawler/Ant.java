@@ -3,8 +3,10 @@ package crawler;
 import graph.GraphRepository;
 import graph.NodePage;
 import scorer.Scorer;
+import util.GraphUtils;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +39,7 @@ public class Ant
     }
 
 
-    public int AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep, int visitedPages, int maxPagesToVisit) throws IOException {
+    public int AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep, int visitedPages, int maxPagesToVisit) throws IOException, SQLException {
 
         this.path = new ArrayList<>();
 
@@ -71,7 +73,7 @@ public class Ant
 
             NodePage successorNode = selectNode(currentNode, frontier);
 
-            while(path.contains(successorNode) && frontier.size() > 0){
+            while(successorNode != null && GraphUtils.contains(path, successorNode)){
                 frontier.remove(successorNode);
                 successorNode = selectNode(currentNode, frontier);
             }
