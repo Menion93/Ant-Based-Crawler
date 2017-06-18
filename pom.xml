@@ -55,5 +55,10 @@
 			<artifactId>http-request</artifactId>
 			<version>6.0</version>
 		</dependency>
+		<dependency>
+			<groupId>groupId</groupId>
+			<artifactId>ProgettoSII</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
