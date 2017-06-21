@@ -6,6 +6,7 @@ import crawler.AntBasedCrawler;
 import crawler.Evaluation;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
+import net.jeremybrooks.knicker.KnickerException;
 import scorer.ScorerFactory;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class Main
 {
 
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException, KnickerException {
         Configuration conf = new Configuration();
 
         ScorerFactory scorerFactory = new ScorerFactory(conf.getScoringMethod(), conf.getQuery());
@@ -40,7 +41,7 @@ public class Main
         List<Map.Entry<String, Evaluation>> entries = antCrawler.FetchPagesId();
 
         for(Map.Entry<String, Evaluation> entry : entries){
-            System.out.println(entry.getKey() + " - " + entry.getValue().getScore());
+            System.out.println(entry.getKey() + " - " + entry.getValue().getScore() + " - " + entry.getValue().getDepth());
         }
 
         System.out.println("End");
