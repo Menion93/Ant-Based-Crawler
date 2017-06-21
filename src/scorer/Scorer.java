@@ -10,11 +10,11 @@ import java.sql.SQLException;
  */
 public abstract class Scorer
 {
-    protected String query;
+    protected QueryAdapter queryAdapter;
 
-    public Scorer(String query)
+    public Scorer(QueryAdapter queryAdapter)
     {
-        this.query = query;
+        this.queryAdapter = queryAdapter;
     }
 
     public abstract double predictScore(NodePage content) throws UnsupportedEncodingException, SQLException;

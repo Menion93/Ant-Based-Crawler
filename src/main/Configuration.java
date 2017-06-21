@@ -7,8 +7,8 @@ package main; /**
 
 public class Configuration
 {
-    private int numberOfAnts = 100;
-    private int maxPagesToVisit = 100;
+    private int numberOfAnts = 10;
+    private int maxPagesToVisit = 1000;
     private int maxNumberOfIteration = 100;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
@@ -18,17 +18,19 @@ public class Configuration
     private String suffix = "/forum/";
     //private String suffix = "/";
 
-    private String seedUrl = "http://www.hwupgrade.it/forum/forumdisplay.php?f=22";
-    //private String seedUrl = "http://www.hwupgrade.it/forum/";
+    //private String seedUrl = "http://www.hwupgrade.it/forum/forumdisplay.php?f=22";
+    private String seedUrl = "http://www.hwupgrade.it/forum/";
 
     //private String query = "modem";
-    private String query = "ps4";
+    private String query = "modem tp-link";
 
     //private String scoringMethod = "DictionaryScorer";
-    private String scoringMethod = "HeaderScorer";
+    private String scoringMethod = "PageScorer";
 
     private String graphApi = "StandardWeb";
     //private String graphApi = "CommonCrawlRepo";
+
+    private String rootFolder = "F:\\Documenti\\Università\\II Anno\\SII\\CrawlerWeb\\";
 
 
 
@@ -64,5 +66,9 @@ public class Configuration
 
     public String getSuffix() {
         return suffix;
+    }
+
+    public String getRootFolder() {
+        return rootFolder;
     }
 }

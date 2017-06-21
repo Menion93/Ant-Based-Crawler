@@ -1,8 +1,5 @@
 package scorer.relateds;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +16,12 @@ import net.jeremybrooks.knicker.dto.Related;
 import net.jeremybrooks.knicker.dto.TokenStatus;
 
 public class WordnikHandler {
+
+
+
+	public WordnikHandler(){
+		checkKey();
+	}
 
 	/**
 	 * retrieves relateds (specified in related input), with relative frequency, of the input word
@@ -94,5 +97,41 @@ public class WordnikHandler {
 			} catch (InterruptedException | ExecutionException e) {	e.printStackTrace();}
 		pool.shutdown();
 		return relatedsFreq;
+	}
+
+	public List<String> getHypernyms(String word) throws KnickerException {
+		List<String> hypernyms = new LinkedList<>();
+		List<Related> listRelateds = WordApi.related(word, false, EnumSet.of(RelationshipType.hypernym),100);
+
+		for(Related rel : listRelateds){
+			for(String hyp : rel.getWords())
+				hypernyms.add(hyp);
+		}
+
+		return hypernyms;
+	}
+
+	public List<String> getHyponyms(String word) throws KnickerException {
+		List<String> hyponyms = new LinkedList<>();
+		List<Related> listRelateds = WordApi.related(word, false, EnumSet.of(RelationshipType.hypernym),100);
+
+		for(Related rel : listRelateds){
+			for(String hyp : rel.getWords())
+				hyponyms.add(hyp);
+		}
+
+		return hyponyms;
+	}
+
+	public List<String> getSynonyms(String word) throws KnickerException {
+		List<String> synonyms = new LinkedList<>();
+		List<Related> listRelateds = WordApi.related(word, false, EnumSet.of(RelationshipType.hypernym),100);
+
+		for(Related rel : listRelateds){
+			for(String hyp : rel.getWords())
+				synonyms.add(hyp);
+		}
+
+		return synonyms;
 	}
 }
