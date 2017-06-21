@@ -17,8 +17,8 @@ import scorer.relateds.WordnikHandler;
  */
 public class DictionaryScorer extends Scorer {
 	
-    public DictionaryScorer(String query){
-		super(query);
+    public DictionaryScorer(QueryAdapter queryAd){
+		super(queryAd);
     }
     
     public double predictScore(NodePage nodePage) throws UnsupportedEncodingException, SQLException {
@@ -55,7 +55,7 @@ public class DictionaryScorer extends Scorer {
     	double numberDocuments = 1000000;	//TODO calculate a better value
     	double tf_idf = 0;
 
-    	Map<String, Double> relatedFreq = wordnik.getRelatedFreqParallel(query, related);
+    	Map<String, Double> relatedFreq = wordnik.getRelatedFreqParallel(queryAdapter.getQuery(), related);
     	for (String rel : relatedFreq.keySet()){
     		tf_idf = tf_idf + ((countOccurrences(content, rel) / dimNode) * Math.log(numberDocuments / relatedFreq.get(rel)));
 //    		System.out.println(tf_idf);

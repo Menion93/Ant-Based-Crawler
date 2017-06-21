@@ -6,10 +6,12 @@ package crawler;
 
 import graph.GraphRepository;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import graph.NodePage;
+import net.jeremybrooks.knicker.KnickerException;
 import scorer.ScorerFactory;
 import util.RankingComparator;
 
@@ -35,8 +37,7 @@ public class AntBasedCrawler
 
     public AntBasedCrawler(int numberOfAnts, int maxPagesToVisit, int maxNumberOfIteration,
                            double trailUpdateCoefficient, double randomInitValue, boolean cachePages, ScorerFactory scFactory,
-                           GraphRepository graphRepo)
-    {
+                           GraphRepository graphRepo) throws FileNotFoundException, KnickerException {
         this.numberOfAnts = numberOfAnts;
         this.maxPagesToVisit = maxPagesToVisit;
         this.maxNumberOfIteration = maxNumberOfIteration;

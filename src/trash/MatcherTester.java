@@ -5,6 +5,7 @@ import graph.GraphRepository;
 import graph.NodePage;
 import main.Configuration;
 import scorer.DictionaryScorer;
+import scorer.QueryAdapter;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,7 +47,7 @@ public class MatcherTester {
 				"\n" + 
 				"Their long association with humans has led dogs to be uniquely attuned to human behavior[12] and they are able to thrive on a starch-rich diet that would be inadequate for other canid species.[13] Dogs vary widely in shape, size and colours.[14] Dogs perform many roles for people, such as hunting, herding, pulling loads, protection, assisting police and military, companionship and, more recently, aiding handicapped individuals. This influenc");
 		String query = "dog";
-		DictionaryScorer dicScore = new DictionaryScorer(query);
+		DictionaryScorer dicScore = new DictionaryScorer(new QueryAdapter(query));
 		double score = dicScore.predictScore(nodePage);
 		System.out.println(score);
 

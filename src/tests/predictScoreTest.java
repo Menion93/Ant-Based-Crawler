@@ -4,6 +4,7 @@ import graph.GraphRepoFactory;
 import graph.GraphRepository;
 import graph.NodePage;
 import graphBuilding.GraphBuilder;
+import net.jeremybrooks.knicker.KnickerException;
 import scorer.Scorer;
 import scorer.ScorerFactory;
 import main.Configuration;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 public class predictScoreTest
 {
 
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException, KnickerException {
         Configuration conf = new Configuration();
 
         GraphRepository repo = new GraphRepoFactory().getGraphApi(conf.getGraphApi(), conf.isFocusingOnSingleSite(), conf.getSeedUrl(), conf.getSuffix());
