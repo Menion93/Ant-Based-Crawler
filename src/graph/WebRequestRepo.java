@@ -31,6 +31,8 @@ public class WebRequestRepo extends GraphRepository{
             System.out.println("Request Failed, returning an empty body");
         }
         finally {
+            if(body == EMPTY)
+                badPages++;
             return body;
         }
     }

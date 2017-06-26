@@ -1,5 +1,6 @@
 package crawler;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import graph.GraphRepository;
 import graph.NodePage;
 import scorer.Scorer;
@@ -24,6 +25,7 @@ public class Ant
     private double randomInitValue;
     private boolean cachePages;
 
+    private static String EMPTY = "";
 
     HashMap<Edge, Double > edge2trail;
 
@@ -50,9 +52,14 @@ public class Ant
 
         NodePage currentNode = startNode;
 
+
         if(!id2score.containsKey(currentNode.getId()))
         {
-            id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode), 0));
+
+            id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode),
+                    0,
+                    currentNode.getContent() != EMPTY));
+
             if(!cachePages)
                 currentNode.freeContentMemory();
 
@@ -84,9 +91,12 @@ public class Ant
             }
 
 
+
             if(!id2score.containsKey(successorNode.getId()))
             {
-                id2score.put(successorNode.getId(), new Evaluation( scorer.predictScore(successorNode), j));
+                id2score.put(successorNode.getId(), new Evaluation( scorer.predictScore(successorNode),
+                        j,
+                        successorNode.getContent() != EMPTY));
                 if(!cachePages)
                     successorNode.freeContentMemory();
 

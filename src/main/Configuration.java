@@ -8,29 +8,30 @@ package main; /**
 public class Configuration
 {
     private int numberOfAnts = 10;
-    private int maxPagesToVisit = 1000;
-    private int maxNumberOfIteration = 100;
+    private int maxPagesToVisit = 2000;
+    private int maxNumberOfIteration = 300;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
     private boolean cachePages = true;
     private boolean focusOnSingleSite = true;
 
-    private String suffix = "/forum/";
-    //private String suffix = "/";
+    //private String suffix = "/forum/";
+    private String suffix = "/";
 
     //private String seedUrl = "http://www.hwupgrade.it/forum/forumdisplay.php?f=22";
-    private String seedUrl = "http://www.hwupgrade.it/forum/";
+    private String seedUrl = "http://mangafox.me/directory/";
 
     //private String query = "modem";
-    private String query = "modem tp-link";
+    private String query = "Boku no hero Academia";
 
     //private String scoringMethod = "DictionaryScorer";
     private String scoringMethod = "PageScorer";
 
-    private String graphApi = "StandardWeb";
-    //private String graphApi = "CommonCrawlRepo";
+    //private String graphApi = "StandardWeb";
+    private String graphApi = "CommonCrawlRepo";
 
-    private String rootFolder = "F:\\Documenti\\Università\\II Anno\\SII\\CrawlerWeb\\";
+    //private String rootFolder = "F:\\Documenti\\Università\\II Anno\\SII\\CrawlerWeb\\";
+    private String rootFolder = "/Users/alex/Documents/IdeaProjects/Ant-Based-Crawler/";
 
 
 

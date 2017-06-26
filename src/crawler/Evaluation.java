@@ -7,10 +7,12 @@ public class Evaluation {
 
     private double score;
     private int depth;
+    private boolean isGood;
 
-    public Evaluation(double score, int depth){
+    public Evaluation(double score, int depth, boolean isGood){
         this.score = score;
         this.depth = depth;
+        this.isGood = isGood;
     }
 
     public double getScore() {
@@ -19,5 +21,9 @@ public class Evaluation {
 
     public int getDepth() {
         return depth;
+    }
+
+    public boolean isGood() {
+        return isGood;
     }
 }

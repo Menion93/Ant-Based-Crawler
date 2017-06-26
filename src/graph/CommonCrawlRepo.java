@@ -1,6 +1,7 @@
 package graph;
 
-import main.java.progettosii.CommonCrawlClient;
+
+import progettosii.CommonCrawlClient;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,9 +15,10 @@ public class CommonCrawlRepo extends GraphRepository {
 
 
     String basePathAndrea = "F:\\Documenti\\Università\\II Anno\\SII";
-    String configurationPath = basePathAndrea + "/CommonCrawl-ProgettoSII-final-with-fileconf2/ProgettoSII/src/file_di_configurazione.txt";
+    String basePathAlex = "/Users/alex/Documents/IdeaProjects";
+    //String configurationPath = basePathAndrea + "/CommonCrawl-ProgettoSII-final-with-fileconf2/ProgettoSII/src/file_di_configurazione.txt";
+    String configurationPath = basePathAlex + "/CommonCrawl-ProgettoSII-final-with-fileconf2/ProgettoSII/src/main/java/file_di_configurazione.txt";
 
-    private static String EMPTY = "";
 
     CommonCrawlClient commonCrawlClient;
 
@@ -33,20 +35,25 @@ public class CommonCrawlRepo extends GraphRepository {
     @Override
     public String getContentPage(String id) throws UnsupportedEncodingException, SQLException {
 
+        String body = EMPTY;
+
         try {
-            String body = commonCrawlClient.getContentUrl(id);
+            body = commonCrawlClient.getContentUrl(id);
+
+        }catch(Exception e){
+            System.out.println("Error: there was a problem getting the page " + id);
+            //e.printStackTrace();
+            badPages++;
+        }
+        finally {
 
             if (body == null) {
                 System.out.println("Content not found in the common crawl api for the page " + id);
+                badPages++;
                 return EMPTY;
             }
 
             return body;
-        }catch(Exception e){
-            System.out.println("Error: there was a problem getting the page " + id);
-        }
-        finally {
-            return EMPTY;
         }
     }
 

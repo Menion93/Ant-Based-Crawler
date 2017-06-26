@@ -26,6 +26,10 @@ public abstract class GraphRepository{
 
 	protected String seed;
 
+	protected static String EMPTY = "";
+
+	protected int badPages;
+
 	private boolean focusOnSinglePage;
 	LinkParser parser;
 
@@ -67,4 +71,7 @@ public abstract class GraphRepository{
 
 	public abstract String getContentPage(String id) throws UnsupportedEncodingException, SQLException;
 
+	public int getBadPages() {
+		return badPages;
+	}
 }

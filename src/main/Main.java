@@ -41,8 +41,13 @@ public class Main
         List<Map.Entry<String, Evaluation>> entries = antCrawler.FetchPagesId();
 
         for(Map.Entry<String, Evaluation> entry : entries){
-            System.out.println(entry.getKey() + " - " + entry.getValue().getScore() + " - " + entry.getValue().getDepth());
+            System.out.println(entry.getKey() + " - " + entry.getValue().getScore() + " - "
+                    + entry.getValue().getDepth() + " - "
+                    + entry.getValue().isGood());
         }
+
+        System.out.println("The crawler visited " + conf.getMaxPagesToVisit() + " pages, "
+                + graphRepo.getBadPages() + " of them were impossible to retrieve");
 
         System.out.println("End");
 
