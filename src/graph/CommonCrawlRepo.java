@@ -13,18 +13,11 @@ import java.sql.SQLException;
  */
 public class CommonCrawlRepo extends GraphRepository {
 
-
-    String basePathAndrea = "F:\\Documenti\\Università\\II Anno\\SII";
-    String basePathAlex = "/Users/alex/Documents/IdeaProjects";
-    //String configurationPath = basePathAndrea + "/CommonCrawl-ProgettoSII-final-with-fileconf2/ProgettoSII/src/file_di_configurazione.txt";
-    String configurationPath = basePathAlex + "/CommonCrawl-ProgettoSII-final-with-fileconf2/ProgettoSII/src/main/java/file_di_configurazione.txt";
-
-
     CommonCrawlClient commonCrawlClient;
 
     public CommonCrawlRepo(boolean focusOnSinglePage, String seedUrl, String suffix) throws IOException {
         super(focusOnSinglePage, seedUrl, suffix);
-        commonCrawlClient = new CommonCrawlClient(configurationPath);
+        commonCrawlClient = new CommonCrawlClient();
     }
 
     @Override
@@ -42,7 +35,7 @@ public class CommonCrawlRepo extends GraphRepository {
 
         }catch(Exception e){
             System.out.println("Error: there was a problem getting the page " + id);
-            //e.printStackTrace();
+            //ße.printStackTrace();
             badPages++;
         }
         finally {

@@ -8,7 +8,7 @@ package main; /**
 public class Configuration
 {
     private int numberOfAnts = 10;
-    private int maxPagesToVisit = 2000;
+    private int maxPagesToVisit = 100;
     private int maxNumberOfIteration = 300;
     private double trailUpdateCoefficient = 0.1;
     private double randomInitValue = 0.5;
