@@ -41,7 +41,7 @@ public class Ant
     }
 
 
-    public int AntCycle(NodePage startNode, HashMap<String,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep, int visitedPages, int maxPagesToVisit) throws IOException, SQLException {
+    public int AntCycle(NodePage startNode, HashMap<NodePage,Evaluation> id2score, GraphRepository graphRepo, int numberOfStep, int visitedPages, int maxPagesToVisit) throws IOException, SQLException {
 
         this.path = new ArrayList<>();
 
@@ -53,10 +53,10 @@ public class Ant
         NodePage currentNode = startNode;
 
 
-        if(!id2score.containsKey(currentNode.getId()))
+        if(!id2score.containsKey(currentNode))
         {
 
-            id2score.put(currentNode.getId(), new Evaluation(scorer.predictScore(currentNode),
+            id2score.put(currentNode, new Evaluation(scorer.predictScore(currentNode),
                     0,
                     currentNode.getContent() != EMPTY));
 
@@ -71,7 +71,7 @@ public class Ant
 
         for(int j=0; j<numberOfStep;j++)
         {
-            List<NodePage> frontier = graphRepo.expandNode(currentNode);
+            List<NodePage> frontier = graphRepo.expandNode(currentNode, id2score);
 
             if (frontier == null){
                 System.out.println("Frontier is null");
@@ -92,9 +92,9 @@ public class Ant
 
 
 
-            if(!id2score.containsKey(successorNode.getId()))
+            if(!id2score.containsKey(successorNode))
             {
-                id2score.put(successorNode.getId(), new Evaluation( scorer.predictScore(successorNode),
+                id2score.put(successorNode, new Evaluation( scorer.predictScore(successorNode),
                         j,
                         successorNode.getContent() != EMPTY));
                 if(!cachePages)
@@ -103,7 +103,7 @@ public class Ant
                 currentVisitedPages++;
             }
 
-            path.add(new Edge(currentNode.getId(), successorNode.getId()));
+            path.add(new Edge(currentNode, successorNode));
 
 
             if(visitedPages + currentVisitedPages >= maxPagesToVisit)
@@ -127,7 +127,7 @@ public class Ant
 
         for(int i=0; i<frontier.size(); i++)
         {
-            Edge e = new Edge(currentNode.getId(), frontier.get(i).getId());
+            Edge e = new Edge(currentNode, frontier.get(i));
             if(edge2trail.containsKey(e))
             {
                 trailsProba[i] = edge2trail.get(e);

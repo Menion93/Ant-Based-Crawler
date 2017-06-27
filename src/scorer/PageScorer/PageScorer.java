@@ -48,7 +48,6 @@ public class PageScorer extends Scorer
         double resultScore = 0;
 
         String content = nodePage.getContent();
-        //System.out.println("page is" +content);
 
         try{
 

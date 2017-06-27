@@ -75,4 +75,18 @@ public class NodePage
         return trim.split("\\s+").length;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NodePage)) return false;
+
+        NodePage nodePage = (NodePage) o;
+
+        return getId().equals(nodePage.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

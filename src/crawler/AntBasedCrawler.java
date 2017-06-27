@@ -15,6 +15,8 @@ import net.jeremybrooks.knicker.KnickerException;
 import scorer.ScorerFactory;
 import util.RankingComparator;
 
+import javax.xml.soap.Node;
+
 public class AntBasedCrawler
 {
 
@@ -27,7 +29,7 @@ public class AntBasedCrawler
 
     // This map represent the id of the pages and its scoreClassifier.
     // It is a cache of the scores of the single pages
-    private HashMap<String, Evaluation> id2score;
+    private HashMap<NodePage, Evaluation> id2score;
 
     // Map representation of the edge and its associated trail value
     private HashMap<Edge, Double > edge2trail;
@@ -56,7 +58,7 @@ public class AntBasedCrawler
 
     }
 
-    public List<Map.Entry<String, Evaluation>> FetchPagesId() throws IOException, SQLException {
+    public List<Map.Entry<NodePage, Evaluation>> FetchPagesId() throws IOException, SQLException {
         List<String> crawledPages = new ArrayList<>();
 
         int visitedPages = 0;
@@ -95,7 +97,7 @@ public class AntBasedCrawler
         System.out.format("In mean the crawling spends about %f seconds per iteration\n", lastedTime/(numberOfStep-1));
 
 
-        List<Map.Entry<String, Evaluation>> ranking = new LinkedList<>(id2score.entrySet());
+        List<Map.Entry<NodePage, Evaluation>> ranking = new LinkedList<>(id2score.entrySet());
         ranking.sort(new RankingComparator());
         // To Do: return the pages crawled, maybe a ranking?
         return ranking;

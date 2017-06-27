@@ -35,7 +35,7 @@ public class CommonCrawlRepo extends GraphRepository {
 
         }catch(Exception e){
             System.out.println("Error: there was a problem getting the page " + id);
-            //ße.printStackTrace();
+            //e.printStackTrace();
             badPages++;
         }
         finally {

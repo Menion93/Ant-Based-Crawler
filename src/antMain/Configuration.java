@@ -1,4 +1,4 @@
-package main; /**
+package antMain; /**
  * Created by Andrea on 05/03/2017.
  *
  * This class define the behaviour of the ant based crawler
@@ -30,8 +30,8 @@ public class Configuration
     //private String graphApi = "StandardWeb";
     private String graphApi = "CommonCrawlRepo";
 
-    //private String rootFolder = "F:\\Documenti\\Università\\II Anno\\SII\\CrawlerWeb\\";
-    private String rootFolder = "/Users/alex/Documents/IdeaProjects/Ant-Based-Crawler/";
+        private String rootFolder = "F:\\Documenti\\Università\\II Anno\\SII\\Ant-Based-Crawler\\";
+    //private String rootFolder = "/Users/alex/Documents/IdeaProjects/Ant-Based-Crawler/";
 
 
 

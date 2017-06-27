@@ -1,7 +1,7 @@
 package scorer;
 
 
-import main.Configuration;
+import antMain.Configuration;
 import net.jeremybrooks.knicker.Knicker;
 import net.jeremybrooks.knicker.KnickerException;
 import net.jeremybrooks.knicker.WordApi;
@@ -9,7 +9,6 @@ import scorer.relateds.WordnikHandler;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Files;
 import java.util.*;
 
 /**

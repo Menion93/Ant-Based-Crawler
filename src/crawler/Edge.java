@@ -1,25 +1,27 @@
 package crawler;
 
+import graph.NodePage;
+
 /**
  * Created by Andrea on 06/03/2017.
  */
 public class Edge
 {
-    private String from;
-    private String to;
+    private NodePage from;
+    private NodePage to;
 
-    public Edge(String from, String to)
+    public Edge(NodePage from, NodePage to)
     {
         this.from = from;
         this.to = to;
     }
 
-    public String getFrom()
+    public NodePage getFrom()
     {
         return from;
     }
 
-    public String getTo()
+    public NodePage getTo()
     {
         return to;
     }
@@ -31,7 +33,7 @@ public class Edge
 
         Edge edge = (Edge) o;
 
-        return (this.from.compareTo(edge.getFrom()) + this.to.compareTo(edge.getTo())) == 0;
+        return (this.from.getId().compareTo(edge.getFrom().getId()) + this.to.getId().compareTo(edge.getTo().getId())) == 0;
     }
 
     @Override

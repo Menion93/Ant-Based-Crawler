@@ -3,9 +3,12 @@ package graph;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.sun.org.apache.xml.internal.serializer.utils.SystemIDResolver;
+import crawler.Evaluation;
 import org.apache.commons.io.IOUtils;
 import org.archive.io.ArchiveReader;
 import org.archive.io.ArchiveRecord;
@@ -41,19 +44,19 @@ public abstract class GraphRepository{
 
 	public abstract NodePage getNodePageRoot();
 
-	public List<NodePage> expandNode(NodePage nodePage) throws IOException, SQLException {
+	public List<NodePage> expandNode(NodePage nodePage, HashMap<NodePage,Evaluation> id2score) throws IOException, SQLException {
 
 		if(nodePage.hasNoSuccessor())
 			return null;
 
-		if (!nodePage.hasNoSuccessor() && nodePage.getSuccessors().size() != 0)
+		if (nodePage.getSuccessors().size() != 0)
 			return nodePage.getSuccessors();
 
 		List<NodePage> nodeSuccessors = new ArrayList<>();
 
 		String body = nodePage.getContent();
 
-		List<String> links = parser.getLinks(body, nodePage.getId(), focusOnSinglePage);
+		Set<String> links = parser.getLinks(body, nodePage.getId(), focusOnSinglePage);
 
 		if(links.size() == 0){
 			nodePage.hasNoSuccessor(true);
@@ -61,7 +64,22 @@ public abstract class GraphRepository{
 		}
 
 		for(String link : links){
-			nodeSuccessors.add(new NodePage(link, this));
+
+			NodePage dummy = new NodePage(link, this);
+
+			if(id2score.containsKey(dummy)){
+
+				// Its slow but it saves memory
+				for(NodePage keyNode : id2score.keySet())
+					if(keyNode.getId().equals(link)){
+						nodeSuccessors.add(keyNode);
+						break;
+					}
+
+			}
+			else{
+				nodeSuccessors.add(dummy);
+			}
 		}
 
 		nodePage.setSuccessors(nodeSuccessors);

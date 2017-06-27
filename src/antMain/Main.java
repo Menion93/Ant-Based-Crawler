@@ -2,10 +2,12 @@ package main; /**
  * Created by Andrea on 05/03/2017.
  */
 
+import antMain.Configuration;
 import crawler.AntBasedCrawler;
 import crawler.Evaluation;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
+import graph.NodePage;
 import net.jeremybrooks.knicker.KnickerException;
 import scorer.ScorerFactory;
 
@@ -38,10 +40,10 @@ public class Main
                                       scorerFactory,
                                       graphRepo);
 
-        List<Map.Entry<String, Evaluation>> entries = antCrawler.FetchPagesId();
+        List<Map.Entry<NodePage, Evaluation>> entries = antCrawler.FetchPagesId();
 
-        for(Map.Entry<String, Evaluation> entry : entries){
-            System.out.println(entry.getKey() + " - " + entry.getValue().getScore() + " - "
+        for(Map.Entry<NodePage, Evaluation> entry : entries){
+            System.out.println(entry.getKey().getId() + " - " + entry.getValue().getScore() + " - "
                     + entry.getValue().getDepth() + " - "
                     + entry.getValue().isGood());
         }

@@ -3,11 +3,10 @@ package tests;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
 import graph.NodePage;
-import graphBuilding.GraphBuilder;
 import net.jeremybrooks.knicker.KnickerException;
 import scorer.Scorer;
 import scorer.ScorerFactory;
-import main.Configuration;
+import antMain.Configuration;
 
 import java.io.IOException;
 import java.sql.SQLException;

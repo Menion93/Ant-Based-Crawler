@@ -1,8 +1,9 @@
 package graph;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,16 +20,16 @@ public class LinkParser {
 		this.suffix = suffix;
 	}
 
-	public List<String> getLinks(String html, String url) throws IOException {
+	public Set<String> getLinks(String html, String url) throws IOException {
 		return getLinks(html, url, false);
 	}
 
 
-		public List<String> getLinks(String html, String url, boolean filterForUrl) throws IOException {
+		public Set<String> getLinks(String html, String url, boolean filterForUrl) throws IOException {
 
 		Document doc = Jsoup.parse(html);
 		Elements links = doc.select("a[href]");
-		List<String> linksList = new LinkedList<>();
+		Set<String> linksList = new HashSet<>();
 
 		String baseUrl = "http://" + url.split("/")[2] + suffix;
 

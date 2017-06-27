@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Andrea on 11/06/2017.
@@ -158,7 +159,7 @@ public class GraphBuilder {
 
         String get = null, http;
         LinkParser linkParser = new LinkParser();
-        List<String> links;
+        Set<String> links;
         int i = 0;
 		/* iterates on each record of the WARC file, where a record could be the field "HTTP GET" of the web page,
 		 * the field "HTTP response" that contains the HTML code of the web page and the field "fetch time",

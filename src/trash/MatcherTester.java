@@ -3,7 +3,7 @@ package trash;
 import graph.GraphRepoFactory;
 import graph.GraphRepository;
 import graph.NodePage;
-import main.Configuration;
+import antMain.Configuration;
 import scorer.DictionaryScorer;
 import scorer.QueryAdapter;
 
