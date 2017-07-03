@@ -71,8 +71,6 @@ Go in the antMain.Configuration.java class, you can see those parameters
 * **graphApi**: This is the interface that gives you the pages to crawl, you can choose between the "Standard Web" to access the internet, and "CommonCrawlRepo" to access the [common crawl](http://commoncrawl.org/)
 * **rootFolder**: Last but not the least, you need to set the root folder of the application
 
-## Brief Description
-
 
 ## Built With
 
